@@ -1,54 +1,36 @@
 #include "LinkedList.h"
-#include "Bag.h"
-#include "CircularList.h"
+#include "Stack.h"
+#include "Queue.h"
+#include "Josephus.h"
 #include <iostream>
 #include <string>
 
 int main() {
-    // ----- LinkedList test -----
-    LinkedList<int> L;
-    L.insert(1, 10);
-    L.insert(2, 20);
-    L.insert(3, 30);
+    // ----- Stack quick test -----
+    Stack<int> st;
+    st.push(10); st.push(20); st.push(30);
+    std::cout << "[Stack] top: " << st.top() << " size: " << st.getSize() << "\n";
+    st.pop();
+    std::cout << "[Stack] top after pop: " << st.top() << "\n";
 
-    std::cout << "[LinkedList test]\n";
-    std::cout << "Length: " << L.getLength() << "\n";
-    std::cout << "Entry 2: " << L.getEntry(2) << "\n";
+    // ----- Queue quick test -----
+    Queue<std::string> q;
+    q.enqueue("a"); q.enqueue("b"); q.enqueue("c");
+    std::cout << "[Queue] front: " << q.front() << " size: " << q.getSize() << "\n";
+    q.dequeue();
+    std::cout << "[Queue] front after dequeue: " << q.front() << "\n";
 
-    L.replace(2, 99);
-    std::cout << "Entry 2 after replace: " << L.getEntry(2) << "\n";
+    // ----- Josephus tests -----
+    auto ord0 = josephusOrder(5, 0); // expect 1,2,3,4; winner 5
+    std::cout << "[Josephus M=0, N=5] elim: ";
+    for (int x : ord0) std::cout << x << " ";
+    std::cout << " winner: " << josephusWinner(5, 0) << "\n";
 
-    L.remove(1);
-    std::cout << "First after remove: " << L.getEntry(1) << "\n\n";
+    auto ord1 = josephusOrder(5, 1); // expect 2,4,1,5; winner 3
+    std::cout << "[Josephus M=1, N=5] elim: ";
+    for (int x : ord1) std::cout << x << " ";
+    std::cout << " winner: " << josephusWinner(5, 1) << "\n";
 
-
-    // ----- Bag test -----
-    Bag<std::string> b;
-    b.add("apple");
-    b.add("banana");
-    b.add("apple");
-
-    std::cout << "[Bag test]\n";
-    std::cout << "Bag size: " << b.getCurrentSize() << "\n";
-    std::cout << "Contains banana? " << (b.contains("banana") ? "yes" : "no") << "\n";
-    std::cout << "Frequency of apple: " << b.getFrequencyOf("apple") << "\n";
-
-    b.remove("apple");
-    std::cout << "After remove, frequency of apple: " << b.getFrequencyOf("apple") << "\n\n";
-
-
-    // ----- CircularList test -----
-    CircularList<int> C;
-    C.insert(1, 10);
-    C.insert(2, 20);
-    C.insert(3, 30);
-    C.insert(4, 40);
-
-    auto order = C.traverseFrom(3); // expect 30, 40, 10, 20
-    std::cout << "[CircularList test]\n";
-    std::cout << "From 3: ";
-    for (auto v : order) std::cout << v << " ";
-    std::cout << "\n";
-
-    return 0;
+    // one more
+    std::cout << "[Josephus M=2, N=10] winner: " << josephusWinner(10, 2) << "\n";
 }
